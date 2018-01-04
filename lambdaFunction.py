@@ -4,30 +4,142 @@
 #函数式编程
 import os
 import sys
+import math
 from functools import reduce
+
+import functools  #
 def test():
-    test6()
+    # count1, count2, count3 = test9()
+    # print( count1(), count2(), count3())
+    test11()
+
+#偏函数 简单总结functools.partial的作用就是，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数，调用这个新函数会更简单。
+def test11():
+    print(int('1234556', base = 8))
+    int2 = functools.partial(int, base=2)
+
+#装饰器（decorator）  在函数运行期间，动态的更改函数的增加功能
+
+def log(func):
+    def wrapper(*args, **kw):
+        print('call %s()' % func.__name__)
+        return func(*args, **kw)
+    return wrapper
+@log
+def test10():
+    print('hello,world')
+
+
+#闭包
+@log
+def test9():
+    def c(i):
+        def calc():
+            return i * i
+        return calc
+
+    l = []
+    for i in range(1,4):
+        l.append( c(i))
+    return l
+
+def test8():
+    l = []
+    for i in range(1,4):
+        def calc():
+            return i * i
+        l.append(calc)
+    return l
+
+
+
+#返回函数
+def test7(*args):
+    
+    def sum():
+        n = 0
+        for k in args:
+            n = n + k
+        return n
+    return sum
+
+
 
 
 #filter 参数为一个函数和一个序列，函数依次作用于序列的每一个元素，根据返回值是true或者fale决定是否丢弃该元素
 
 #计算素数
 def test6():
-    def _odd_iter():
-        n = 1
-        print(n)
-        while True:
-            n = n + 2
-            print(n)
-            yield n
-    _odd_iter()
-	# num = [2, 3, 5, 7]
-	# def findPrime(n):
-	# 	if n == 10000:
-	# 		return
+	#生成一个所有素数的生成器
+    # def _odd_iter(): 
+    # 	n = 1
+    # 	while True:
+    # 		n = n + 2
+    # 		yield n
+    # def _not_divisible(n):
 
-	# 	return findPrime(n + 1)
-	# findPrime(2)
+    #     return lambda x: x % n > 0
+
+    # def primes():
+
+    # 	yield 2
+    # 	it = _odd_iter()
+    # 	while True:
+    # 		n = next(it)
+    # 		yield n
+    # 		it = filter( _not_divisible(n), it)
+
+    # for k in primes():
+    # 	if k < 1000:
+    # 	    print(k)
+    # 	else:
+    # 		break
+
+
+    #回数的筛选
+    def _nums():
+    	n = 0
+    	while True:
+    		n = n + 1
+    		yield n
+
+
+    def findHuiNum(n):
+    	ls = str(n)
+    	invert = ls[::-1]
+
+    	if ls == invert:
+    		print(n)
+
+    for k in _nums():
+    	if k < 10000:
+    		findHuiNum(k)
+    	else:
+    		break
+
+    # def _odd_iter():
+    #     n = 1
+    #     while True:
+    #         n = n + 2
+    #         yield n
+
+    # def _not_divisible(n):
+    #     return lambda x: x % n > 0
+  
+    # def primes():
+    #     yield 2
+    #     it = _odd_iter()
+    #     while True:
+    #         n = next(it)
+    #         yield n
+    #         it = filter(_not_divisible(n), it)
+
+    # for n in primes():
+    # 	if n < 1000:
+    # 		print(n)
+    # 	else:
+    # 		break
+
 
 #map reduce
 
